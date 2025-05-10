@@ -1,7 +1,6 @@
-# Slides template repo
+# My date picker journey
 
-[Deployed here](https://one19.github.io/slide-deck/)
-[Storybook deployed here](https://one19.github.io/slide-deck/storybook/)
+[Deployed here](https://azybler.github.io/my-datepicker-journey/)
 
 This template provides a minimal setup to get React working in Vite with HMR and some ESLint rules.
 Tech:
