@@ -298,7 +298,7 @@
     opacity: 1;
 }
   100% {
-    transform: scale(calc(var(--calendar-width)/(var(--calendar-width)/var(--calendar-months-col))));
+    transform: scale(var(--calendar-months-col));
     opacity: 0;
   }
 }
