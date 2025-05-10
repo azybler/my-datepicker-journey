@@ -1,0 +1,36 @@
+import { Column, Row } from '../Column'
+import scaleDownDayGrid from '/src/assets/scale_down_day_grid.png'
+
+# Animating the day grid (part 1)
+
+<Row>
+  <Column>
+    $$
+      s_n = \frac{\frac{w}{c}}{w}
+    $$
+
+    $$ w = $$ width of the calendar.
+    
+    $$ c = $$ number of columns, in this case 4.
+    
+    $$ s_n = $$ the scale we need to transform to.
+
+    ```css
+    @keyframes dayGridScaleAnimation {
+      0% {
+        transform: scale(1);
+      }
+      100% {
+        transform: scale(0.25);
+      }
+    }
+
+    .day-grid-animate-contract {
+      animation: dayGridScaleAnimation 0.3s ease-in forwards;
+    }
+    ```
+  </Column>
+  <Column>
+    <img src={scaleDownDayGrid} width="600" alt="scaling down the day grid" />
+  </Column>
+</Row>

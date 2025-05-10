@@ -1,9 +1,9 @@
 import styled from '@emotion/styled';
 
-type BackgroundCirclesProps = {
+interface BackgroundCirclesProps {
   currentSlide: number;
   totalSlides: number;
-};
+}
 
 // Helper function to convert hex color to rgba
 const hexToRgba = (hex: string, alpha: number): string => {
@@ -12,6 +12,16 @@ const hexToRgba = (hex: string, alpha: number): string => {
   const b = parseInt(hex.slice(5, 7), 16);
   return `rgba(${r}, ${g}, ${b}, ${alpha})`;
 };
+
+const WhiteBackground = styled.div`
+  position: fixed;
+  top: 0;
+  left: 0;
+  width: 100%;
+  height: 100%;
+  background: white;
+  transition: background 0.8s ease-out;
+`;
 
 // The styled component that creates the background with radial gradients
 const GradientBackground = styled.div<BackgroundCirclesProps>`
@@ -68,6 +78,9 @@ const BackgroundCircles = ({
   currentSlide,
   totalSlides,
 }: BackgroundCirclesProps) => {
+  if (currentSlide === 9) {
+    return <WhiteBackground />;
+  }
   return (
     <GradientBackground currentSlide={currentSlide} totalSlides={totalSlides} />
   );

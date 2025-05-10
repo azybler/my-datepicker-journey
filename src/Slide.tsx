@@ -8,8 +8,8 @@ const SlideContainer = styled.div`
   height: 100vh;
   width: 100vw;
   box-sizing: border-box;
-  background-color: ${({ theme }) => theme.colors.primaryBackground};
   color: ${({ theme }) => theme.colors.primary};
+  overflow: hidden;
 `;
 
 type SlideProps = {

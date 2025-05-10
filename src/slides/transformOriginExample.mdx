@@ -1,0 +1,33 @@
+import ClickReveal from '../ClickReveal';
+import { Column, Row } from '../Column'
+import transformOriginCalcExample from '/src/assets/transform-origin-calc-example.png'
+
+# `transform-origin` calculation example
+
+<Row>
+  <Column>
+    <ClickReveal>
+      $$
+        p_t = 72.8 \frac{1}{1 - 0.25}
+      $$
+
+      $$ p_t = $$ 97.06666666667
+      
+      $$
+        p_t = 69 \frac{1}{1 - 0.25}
+      $$
+
+      $$ p_t = $$ 92
+      
+
+      ```css
+      .month-june {
+        transform-origin: 92px 97.06666666667px
+      }
+      ```
+    </ClickReveal>
+  </Column>
+  <Column>
+    <img src={transformOriginCalcExample} width="600" alt="example of calculating transform origin" />
+  </Column>
+</Row>

@@ -1,0 +1,326 @@
+:root {
+  --animation-slide-duration: .3s;
+  --animation-scale-duration: .3s;
+  --calendar-months-col: 4;
+  --calendar-padding: 12;
+  --calendar-width: calc(276 + (var(--calendar-padding) * 2));
+}
+
+.date-picker-main {
+  position: relative;
+  display: inline-block;
+}
+
+.date-button {
+  padding: 8px 12px;
+  border: 1px solid #ccc;
+  border-radius: 12px;
+  background: white;
+  cursor: pointer;
+  min-width: 150px;
+  text-align: left;
+  color: #333;
+}
+
+.calendar {
+  position: absolute;
+  top: 100%;
+  left: 0;
+  z-index: 10;
+  background: white;
+  border: 1px solid #ccc;
+  border-radius: 12px;
+  box-shadow: 0 2px 5px rgba(0, 0, 0, 0.15);
+  width: calc(var(--calendar-width) * 1px);
+  padding: 0;
+  margin-top: 1px;
+}
+
+.calendar.hideHiddenOverlay {
+  overflow: hidden;
+}
+
+.calendar.showHiddenOverlay {
+  overflow: visible;
+}
+
+.calendar-header-container {
+  position: relative;
+}
+
+.calendar-header {
+  display: flex;
+  flex-direction: column;
+  margin: calc(var(--calendar-padding) * 1px) calc(var(--calendar-padding) * 1px) 0;
+}
+
+.calendar-body-container {
+  position: relative;
+}
+
+.year-navigator,
+.month-navigator {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  margin-bottom: 8px;
+}
+
+.navigator-button {
+  background: none;
+  border: none;
+  cursor: pointer;
+  padding: 2px;
+  border-radius: 10px;
+  border: 1px solid #e4e4e7;
+  display: flex;
+  opacity: 0.5;
+  color: #333;
+}
+
+.navigator-button:hover {
+  opacity: 1;
+}
+
+.navigator-title {
+  padding: 4.8px 8px;
+  background: none;
+  border: none;
+  cursor: pointer;
+  border-radius: 10px;
+  border: 1px solid #fff;
+  display: flex;
+  opacity: 1;
+  font-weight: 700;
+  font-size: 16px;
+  color: #71717a;
+  line-height: normal;
+}
+
+.navigator-title:hover {
+  border: 1px solid #e4e4e7;
+}
+
+.year-navigator span,
+.month-navigator span {
+  font-weight: bold;
+}
+
+.weekdays {
+  display: grid;
+  grid-template-columns: repeat(7, 1fr);
+  gap: 2px;
+  margin-bottom: 8px;
+  background-color: transparent;
+}
+
+.weekday {
+  text-align: center;
+  font-weight: bold;
+  font-size: 0.8em;
+  padding: 6px 0;
+  color: #71717a;
+}
+
+.days-grid {
+  display: grid;
+  grid-template-columns: repeat(7, 1fr);
+  gap: 2px;
+}
+
+.day {
+  text-align: center;
+  padding: 5px 0;
+  cursor: pointer;
+  border-radius: 4px;
+  color: #09090b;
+  line-height: 1.2em;
+}
+
+.day:hover:not(.empty) {
+  background-color: #f0f0f0;
+}
+
+.day.empty {
+  pointer-events: none;
+  color: #fff;
+  user-select: none;
+}
+
+.day.selected {
+  background-color: #007bff;
+  color: white;
+}
+
+.months-grid-container {
+  display: grid;
+  grid-template-columns: repeat(4, 1fr);
+  gap: 0;
+  background-color: transparent;
+}
+
+.month {
+  text-align: center;
+  padding: 19px 0;
+  cursor: pointer;
+  border-radius: 4px;
+  font-size: 29px;
+  color: #09090b;
+  line-height: 1.2em;
+}
+
+.month:hover {
+  background-color: #f0f0f0;
+}
+
+.years-grid-container {
+  display: grid;
+  grid-template-columns: repeat(4, 1fr);
+  gap: 0;
+  background-color: transparent;
+}
+
+.will-change-transform-and-opacity {
+  will-change: transform, opacity;
+}
+
+.year {
+  text-align: center;
+  padding: 21px 0 22px;
+  cursor: pointer;
+  border-radius: 4px;
+  font-size: 25px;
+  color: #09090b;
+  letter-spacing: -1px;
+  line-height: 1.2em;
+}
+
+.year:hover {
+  background-color: #f0f0f0;
+}
+
+@keyframes transitionGridSlideAnimation {
+  0% {
+    transform: translateX(100%);
+    opacity: 0;
+  }
+  100% {
+    transform: translateX();
+    opacity: 1;
+  }
+}
+
+.transition-grid-animate-slideLeft.normal {
+  animation: transitionGridSlideAnimation var(--animation-slide-duration) ease-in forwards;
+}
+
+.transition-grid-animate-slideLeft.slow {
+  animation: transitionGridSlideAnimation 3s ease-in forwards;
+}
+
+.transition-grid-animate-slideRight.normal {
+  animation: transitionGridSlideAnimation var(--animation-slide-duration) ease-in reverse;
+}
+.transition-grid-animate-slideRight.slow {
+  animation: transitionGridSlideAnimation 3s ease-in reverse;
+}
+
+@keyframes mainGridSlideAnimation {
+  0% {
+    transform: translateX();
+    opacity: 1;
+  }
+  100% {
+    transform: translateX(-100%);
+    opacity: 0;
+  }
+}
+
+.main-grid-animate-slideLeft.normal {
+  animation: mainGridSlideAnimation var(--animation-slide-duration) ease-in forwards;
+}
+.main-grid-animate-slideLeft.slow {
+  animation: mainGridSlideAnimation 3s ease-in forwards;
+}
+
+.main-grid-animate-slideRight.normal {
+  animation: mainGridSlideAnimation var(--animation-slide-duration) ease-in reverse forwards;
+}
+.main-grid-animate-slideRight.slow {
+  animation: mainGridSlideAnimation 3s ease-in reverse forwards;
+}
+
+@keyframes mainGridScaleAnimation {
+  0% {
+    transform: scale(calc((var(--calendar-width)/var(--calendar-months-col))/var(--calendar-width)));
+    opacity: 0;
+  }
+  100% {
+    transform: scale(1);
+    opacity: 1;
+  }
+}
+
+.main-grid-animate-contract.normal {
+  animation: mainGridScaleAnimation var(--animation-scale-duration) ease-in reverse forwards;
+}
+.main-grid-animate-contract.slow {
+  animation: mainGridScaleAnimation 3s ease-in reverse forwards;
+}
+
+.main-grid-animate-expand.normal {
+  animation: mainGridScaleAnimation var(--animation-scale-duration) ease-in forwards;
+}
+.main-grid-animate-expand.slow {
+  animation: mainGridScaleAnimation 3s ease-in forwards;
+}
+
+.header-transition, .body-transition {
+  position: absolute;
+  top: 0;
+  left: 0;
+  width: calc(100% - calc(var(--calendar-padding) * 1px) - calc(var(--calendar-padding) * 1px));
+  pointer-events: none;
+  user-select: none;
+}
+
+.header-transition {
+  margin: 0 0 0 calc(var(--calendar-padding) * 1px);
+}
+
+.body-transition {
+  margin: 0 calc(var(--calendar-padding) * 1px) calc(var(--calendar-padding) * 1px);
+}
+
+@keyframes transitionGridScaleAnimation {
+  0% {
+    transform: scale(1);
+    opacity: 1;
+}
+  100% {
+    transform: scale(calc(var(--calendar-width)/(var(--calendar-width)/var(--calendar-months-col))));
+    opacity: 0;
+  }
+}
+
+.transition-grid-animate-contract.normal {
+  animation: transitionGridScaleAnimation var(--animation-scale-duration) ease-in reverse;
+}
+.transition-grid-animate-contract.slow {
+  animation: transitionGridScaleAnimation 3s ease-in reverse;
+}
+
+.transition-grid-animate-expand.normal {
+  animation: transitionGridScaleAnimation var(--animation-scale-duration) ease-in forwards;
+}
+.transition-grid-animate-expand.slow {
+  animation: transitionGridScaleAnimation 3s ease-in forwards;
+}
+
+.days-grid-container, .months-grid-container, .years-grid-container {
+  margin: 0 calc(var(--calendar-padding) * 1px) calc(var(--calendar-padding) * 1px);
+}
+
+.hidden {
+  visibility: hidden;
+}
