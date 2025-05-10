@@ -37,7 +37,6 @@ https://serp.co/tools/css-reset/
     font-family: monospace, monospace; /* 1 */
     font-size: 1em; /* 2 */
     margin: 0;
-    padding: 0;
   }
 
   a {
