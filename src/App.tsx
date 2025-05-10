@@ -5,7 +5,7 @@ import FirstAttempt from './slides/firstAttempt.mdx';
 import LetsDoItAgain from './slides/letsDoItAgain.mdx';
 import WhatCanAIDo from './slides/whatCanAIDo.mdx';
 import Presenting from './slides/presenting.mdx';
-import PresentingDebug from './slides/PresentingDebug.mdx';
+import PresentingDebug from './slides/presentingDebug.mdx';
 import TransformOrigin from './slides/transformOrigin.mdx';
 import Overview from './slides/overview.mdx';
 import AnimatingDayGridPart1 from './slides/animatingDayGridPart1.mdx';
