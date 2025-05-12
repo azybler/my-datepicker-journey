@@ -291,9 +291,9 @@ export default function DatePicker({ selectedDate = null, showHiddenOverlay = fa
     const columnIndex = (gridNumber - 1) % COLUMNS; // 0-based index representing the column
     const shrinkScale = (CALENDAR_WIDTH/COLUMNS)/CALENDAR_WIDTH;
 
-    /* (pixelOffset * (1 / (1 - scale)); */
+    /* (pixelOffset / (1 - scale)); */
     const pixelXAsixOffset = ((CALENDAR_WIDTH - CALENDAR_PADDING - CALENDAR_PADDING) / COLUMNS) * columnIndex;
-    const transformOriginX = pixelXAsixOffset * (1 / (1 - shrinkScale));
+    const transformOriginX = (pixelXAsixOffset / (1 - shrinkScale));
 
     const rect = calendarBodyContainerRef.current.getBoundingClientRect();
     const shrinkHeight = rect.height * shrinkScale;
@@ -302,7 +302,7 @@ export default function DatePicker({ selectedDate = null, showHiddenOverlay = fa
     //there are 3 rows
     const rowIndex = Math.floor((gridNumber - 1) / COLUMNS); // 0-based index representing the row
     const pixelYAsixOffset = pixelGridYAxisOffset + (rect.height / ROWS) * rowIndex;
-    const transformOriginY = pixelYAsixOffset * (1 / (1 - shrinkScale));
+    const transformOriginY = (pixelYAsixOffset / (1 - shrinkScale));
 
     return {
       transformOrigin: `${transformOriginX}px ${transformOriginY}px`,

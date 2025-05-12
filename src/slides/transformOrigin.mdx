@@ -7,13 +7,13 @@ import { Column, Row } from '../Column';
     `transform-origin` has a default value of `50% 50%` which will not have the effect I wanted
 
     $$
-      p_t = p \frac{1}{1-s}
+      x_t = \frac{x}{1-s}
     $$
 
-    $$ p_t = $$ transform-origin offset we're trying to calculate    
+    $$ x_t = $$ the required transform-origin offset (in pixels) to make a scaling operation appear to originate from a desired point.
     
-    $$ p = $$ actual pixel offset we wanted
+    $$ x = $$ the actual desired visual pixel offset
     
-    $$ s = $$ the scale we're transforming it to
+    $$ s = $$ the scale factor applied to the element (e.g., from a CSS transform: scale(s)).
   </Column>
 </Row>
