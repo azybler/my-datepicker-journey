@@ -253,11 +253,11 @@
 }
 
 .main-grid-animate-contract {
-  animation: mainGridScaleAnimation var(--animation-scale-duration) ease-in reverse forwards;
+  animation: mainGridScaleAnimation var(--animation-scale-duration) ease-out reverse forwards;
 }
 
 .main-grid-animate-expand {
-  animation: mainGridScaleAnimation var(--animation-scale-duration) ease-in forwards;
+  animation: mainGridScaleAnimation var(--animation-scale-duration) ease-out forwards;
 }
 
 .header-transition, .body-transition {
@@ -289,11 +289,11 @@
 }
 
 .transition-grid-animate-contract {
-  animation: transitionGridScaleAnimation var(--animation-scale-duration) ease-in reverse forwards;
+  animation: transitionGridScaleAnimation var(--animation-scale-duration) ease-out reverse forwards;
 }
 
 .transition-grid-animate-expand {
-  animation: transitionGridScaleAnimation var(--animation-scale-duration) ease-in forwards;
+  animation: transitionGridScaleAnimation var(--animation-scale-duration) ease-out forwards;
 }
 
 .days-grid-container, .months-grid-container, .years-grid-container {
