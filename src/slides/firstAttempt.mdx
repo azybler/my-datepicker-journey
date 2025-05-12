@@ -1,7 +1,24 @@
+import ClickReveal from '../ClickReveal';
+import { Column, Row } from '../Column'
 import YouTube from 'react-youtube';
 
 # My First attempt
 
-It sucks, but it's done 18 years ago (2007), so cut me some slack
+My attempt to replicate it in JavaScript!
 
-<YouTube videoId="q46aMgiOkUA" />
+<Row>
+  <Column>
+    <YouTube videoId="q46aMgiOkUA" />
+  </Column>
+  <Column>
+    <ClickReveal>
+      The result? Not very well. It stutters, and it's shaky
+
+      I believe I used some JavaScript animation library, I basically have to calculate the font size, the position etc
+
+      I think I have lost the source code, it was 18 years ago.
+
+      But it sucks, so who cares
+    </ClickReveal>
+  </Column>
+</Row>

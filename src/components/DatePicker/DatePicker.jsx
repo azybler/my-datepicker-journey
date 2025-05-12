@@ -29,7 +29,7 @@ const VIEW_MODES = {
   YEAR_TO_NEXT_YEARS: 'year-to-next-12-years-picker',
 };
 
-export default function DatePicker({ selectedDate = null, slowedDowned = false, showHiddenOverlay = false }) {
+export default function DatePicker({ selectedDate = null, showHiddenOverlay = false }) {
   const [isOpen, setIsOpen] = useState(false);
   const [currentDate, setCurrentDate] = useState(selectedDate ? new Date(selectedDate) : new Date());
   const [viewDate, setViewDate] = useState(selectedDate ? new Date(selectedDate) : new Date());
@@ -45,14 +45,14 @@ export default function DatePicker({ selectedDate = null, slowedDowned = false, 
 
   // Animation classes
   const ANIMATIONS = {
-    SLIDE_LEFT: `will-change-transform-and-opacity transition-grid-animate-slideLeft ${slowedDowned ? 'slow' : 'normal'}`,
-    SLIDE_RIGHT: `will-change-transform-and-opacity transition-grid-animate-slideRight ${slowedDowned ? 'slow' : 'normal'}`,
-    MAIN_SLIDE_LEFT: `will-change-transform-and-opacity main-grid-animate-slideLeft ${slowedDowned ? 'slow' : 'normal'}`,
-    MAIN_SLIDE_RIGHT: `will-change-transform-and-opacity main-grid-animate-slideRight ${slowedDowned ? 'slow' : 'normal'}`,
-    CONTRACT: `will-change-transform-and-opacity transition-grid-animate-contract ${slowedDowned ? 'slow' : 'normal'}`,
-    EXPAND: `will-change-transform-and-opacity transition-grid-animate-expand ${slowedDowned ? 'slow' : 'normal'}`,
-    MAIN_CONTRACT: `will-change-transform-and-opacity main-grid-animate-contract ${slowedDowned ? 'slow' : 'normal'}`,
-    MAIN_EXPAND: `will-change-transform-and-opacity main-grid-animate-expand ${slowedDowned ? 'slow' : 'normal'}`,
+    SLIDE_LEFT: 'will-change-transform-and-opacity transition-grid-animate-slideLeft',
+    SLIDE_RIGHT: 'will-change-transform-and-opacity transition-grid-animate-slideRight',
+    MAIN_SLIDE_LEFT: 'will-change-transform-and-opacity main-grid-animate-slideLeft',
+    MAIN_SLIDE_RIGHT: 'will-change-scale-and-opacity main-grid-animate-slideRight',
+    CONTRACT: 'will-change-scale-and-opacity transition-grid-animate-contract',
+    EXPAND: 'will-change-scale-and-opacity transition-grid-animate-expand',
+    MAIN_CONTRACT: 'will-change-scale-and-opacity main-grid-animate-contract',
+    MAIN_EXPAND: 'will-change-scale-and-opacity main-grid-animate-expand'
   };
 
   // ===== Helper Functions =====
