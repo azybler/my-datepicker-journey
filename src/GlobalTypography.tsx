@@ -15,7 +15,7 @@ const GlobalTypography = () => {
           min-height: 100vh;
           width: 100vw;
           max-width: 100%;
-          overflow-x: hidden;
+          overflow: hidden;
           font-family: Inter, system-ui, Avenir, Helvetica, Arial, sans-serif;
           font-weight: 400;
 

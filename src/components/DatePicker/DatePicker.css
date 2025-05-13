@@ -181,7 +181,7 @@
 }
 
 .will-change-transform-and-opacity {
-  will-change: transform, opacity;
+  will-change: transform, opacity; 
 }
 
 .will-change-scale-and-opacity {
