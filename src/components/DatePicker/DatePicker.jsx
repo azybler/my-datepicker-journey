@@ -48,6 +48,7 @@ export default function DatePicker({ selectedDate = null, showHiddenOverlay = fa
   const calendarRef = useRef(null);
   const calendarBodyContainerRef = useRef(null);
   const [initialHeightSet, setInitialHeightSet] = useState(false);
+  const [calendarAnimState, setCalendarAnimState] = useState('closed'); // 'closed' | 'opening' | 'open' | 'closing'
 
   // Animation classes
   const ANIMATIONS = {
@@ -383,7 +384,7 @@ export default function DatePicker({ selectedDate = null, showHiddenOverlay = fa
   const handleDateSelect = (day) => {
     const newDate = new Date(viewDate.getFullYear(), viewDate.getMonth(), day);
     setCurrentDate(newDate);
-    setIsOpen(false);
+    setCalendarAnimState('closing');
   };
 
   const handleMonthClick = (month) => {
@@ -420,11 +421,18 @@ export default function DatePicker({ selectedDate = null, showHiddenOverlay = fa
 
   // Toggle calendar open/closed
   const handleToggleCalendar = () => {
-    setIsOpen(!isOpen);
-    setViewState((prev) => ({
-      ...prev,
-      mode: VIEW_MODES.DAY,
-    }));
+    if (!isOpen) {
+      // Opening
+      setIsOpen(true);
+      setCalendarAnimState('opening');
+      setViewState((prev) => ({
+        ...prev,
+        mode: VIEW_MODES.DAY,
+      }));
+    } else {
+      // Closing - trigger close animation first
+      setCalendarAnimState('closing');
+    }
   };
 
   // Generate calendar grid to show 12 months of the year
@@ -610,7 +618,22 @@ export default function DatePicker({ selectedDate = null, showHiddenOverlay = fa
         {formatDisplayDate(currentDate)}
       </button>
       {isOpen && (
-        <div className={`calendar ${showHiddenOverlay ? 'showHiddenOverlay' : 'hideHiddenOverlay'}`} ref={calendarRef}>
+        <div
+          className={`calendar ${showHiddenOverlay ? 'showHiddenOverlay' : 'hideHiddenOverlay'} ${calendarAnimState === 'opening' ? 'calendar-animate-open' : ''} ${calendarAnimState === 'closing' ? 'calendar-animate-close' : ''}`}
+          ref={calendarRef}
+          onAnimationEnd={(e) => {
+            if (e.animationName === 'calendarOpen') {
+              setCalendarAnimState('open');
+            } else if (e.animationName === 'calendarClose') {
+              setCalendarAnimState('closed');
+              setIsOpen(false);
+              setViewState((prev) => ({
+                ...prev,
+                mode: VIEW_MODES.DAY,
+              }));
+            }
+          }}
+        >
           <div className="calendar-header-container">
             <div className={`calendar-header ${setClassNameForHeader()}`}>
               <div className="month-navigator">

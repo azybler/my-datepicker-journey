@@ -345,3 +345,40 @@
 .hidden {
   visibility: hidden;
 }
+
+@keyframes calendarOpen {
+  0% {
+    transform: scale(0.5);
+    opacity: 0;
+  }
+  70% {
+    transform: scale(1.02);
+    opacity: 1;
+  }
+  100% {
+    transform: scale(1);
+    opacity: 1;
+  }
+}
+
+@keyframes calendarClose {
+  0% {
+    transform: scale(1);
+    opacity: 1;
+  }
+  100% {
+    transform: scale(0.5);
+    opacity: 0;
+  }
+}
+
+.calendar-animate-open {
+  animation: calendarOpen var(--animation-scale-duration) ease-out forwards;
+  transform-origin: 24px -8px;
+}
+
+.calendar-animate-close {
+  animation: calendarClose calc(var(--animation-scale-duration) * 0.6) ease-in forwards;
+  transform-origin: 24px -8px;
+  pointer-events: none;
+}
