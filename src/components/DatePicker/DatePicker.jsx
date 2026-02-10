@@ -10,23 +10,29 @@ const CALENDAR_PADDING = 12;
 const CALENDAR_WIDTH = CALENDAR_PADDING + 276 + CALENDAR_PADDING;
 
 // View mode constants
-const VIEW_MODES = {
-  DAY: 'day-picker',
-  MONTH: 'month-picker',
-  YEAR: 'year-picker',
+const VIEW_MODES = {  
   // Day transitions
+  DAY: 'day-picker',
   DAY_TO_MONTH: 'day-to-month-picker',
   DAY_TO_PREV_MONTH: 'day-to-prev-month-picker',
   DAY_TO_NEXT_MONTH: 'day-to-next-month-picker',
   // Month transitions
+  MONTH: 'month-picker',
   MONTH_TO_DAY: 'month-to-day-picker',
   MONTH_TO_YEAR: 'month-to-year-picker',
   MONTH_TO_PREV_YEAR: 'month-to-prev-month-picker',
   MONTH_TO_NEXT_YEAR: 'month-to-next-month-picker',
   // Year transitions
+  YEAR: 'year-picker',
   YEAR_TO_MONTH: 'year-to-month-picker',
   YEAR_TO_PREV_YEARS: 'year-to-prev-12-years-picker',
   YEAR_TO_NEXT_YEARS: 'year-to-next-12-years-picker',
+  // Decade transitions
+  DECADE: 'decade-picker',
+  YEAR_TO_DECADE: 'year-to-decade-picker',
+  DECADE_TO_YEAR: 'decade-to-year-picker',
+  DECADE_TO_PREV_DECADES: 'decade-to-prev-decades-picker',
+  DECADE_TO_NEXT_DECADES: 'decade-to-next-decades-picker',
 };
 
 export default function DatePicker({ selectedDate = null, showHiddenOverlay = false }) {
@@ -72,7 +78,8 @@ export default function DatePicker({ selectedDate = null, showHiddenOverlay = fa
     return [
       VIEW_MODES.DAY_TO_PREV_MONTH,
       VIEW_MODES.MONTH_TO_PREV_YEAR,
-      VIEW_MODES.YEAR_TO_PREV_YEARS
+      VIEW_MODES.YEAR_TO_PREV_YEARS,
+      VIEW_MODES.DECADE_TO_PREV_DECADES
     ].includes(mode);
   };
 
@@ -81,7 +88,8 @@ export default function DatePicker({ selectedDate = null, showHiddenOverlay = fa
     return [
       VIEW_MODES.DAY_TO_NEXT_MONTH,
       VIEW_MODES.MONTH_TO_NEXT_YEAR,
-      VIEW_MODES.YEAR_TO_NEXT_YEARS
+      VIEW_MODES.YEAR_TO_NEXT_YEARS,
+      VIEW_MODES.DECADE_TO_NEXT_DECADES
     ].includes(mode);
   };
 
@@ -115,6 +123,15 @@ export default function DatePicker({ selectedDate = null, showHiddenOverlay = fa
           ...prev,
           mode: VIEW_MODES.YEAR_TO_PREV_YEARS,
           setYear: prevYearGroup,
+        }));
+        break;
+      }
+      case VIEW_MODES.DECADE: {
+        const prevDecadeGroup = new Date(viewDate.getFullYear() - 144, viewDate.getMonth(), 1);
+        setViewState((prev) => ({
+          ...prev,
+          mode: VIEW_MODES.DECADE_TO_PREV_DECADES,
+          setYear: prevDecadeGroup,
         }));
         break;
       }
@@ -153,6 +170,15 @@ export default function DatePicker({ selectedDate = null, showHiddenOverlay = fa
         }));
         break;
       }
+      case VIEW_MODES.DECADE: {
+        const nextDecadeGroup = new Date(viewDate.getFullYear() + 144, viewDate.getMonth(), 1);
+        setViewState((prev) => ({
+          ...prev,
+          mode: VIEW_MODES.DECADE_TO_NEXT_DECADES,
+          setYear: nextDecadeGroup,
+        }));
+        break;
+      }
       default:
         break;
     }
@@ -166,12 +192,47 @@ export default function DatePicker({ selectedDate = null, showHiddenOverlay = fa
 
   const getStartYear = (year) => year - (year % 12);
 
+  const getStartDecade = (year) => {
+    const sy = getStartYear(year);
+    return sy - (sy % (12 * 12));
+  };
+
+  const setClassNameForDecadesGrid = () => {
+    switch(viewState?.mode) {
+      case VIEW_MODES.YEAR_TO_DECADE:
+        return ` body-transition ${ANIMATIONS.CONTRACT}`;
+      case VIEW_MODES.DECADE_TO_YEAR:
+        return ` body-transition ${ANIMATIONS.EXPAND}`;
+      case VIEW_MODES.DECADE_TO_PREV_DECADES:
+        return ` body-transition ${ANIMATIONS.SLIDE_RIGHT}`;
+      case VIEW_MODES.DECADE_TO_NEXT_DECADES:
+        return ANIMATIONS.MAIN_SLIDE_LEFT;
+    }
+
+    return '';
+  }
+
+  const setClassNameForDecadesTransitionGrid = () => {
+    switch(viewState?.mode) {
+      case VIEW_MODES.DECADE_TO_PREV_DECADES:
+        return ANIMATIONS.MAIN_SLIDE_RIGHT;
+      case VIEW_MODES.DECADE_TO_NEXT_DECADES:
+        return `body-transition ${ANIMATIONS.SLIDE_LEFT}`;
+    }
+
+    return '';
+  }
+
   const setClassNameForYearsGrid = () => {
     switch(viewState?.mode) {
       case VIEW_MODES.MONTH_TO_YEAR:
         return ` body-transition ${ANIMATIONS.CONTRACT}`;
       case VIEW_MODES.YEAR_TO_MONTH:
         return ` body-transition ${ANIMATIONS.EXPAND}`;
+      case VIEW_MODES.YEAR_TO_DECADE:
+        return ANIMATIONS.MAIN_CONTRACT;
+      case VIEW_MODES.DECADE_TO_YEAR:
+        return ANIMATIONS.MAIN_EXPAND;
       case VIEW_MODES.YEAR_TO_PREV_YEARS:
         return ` body-transition ${ANIMATIONS.SLIDE_RIGHT}`;
       case VIEW_MODES.YEAR_TO_NEXT_YEARS:
@@ -260,6 +321,14 @@ export default function DatePicker({ selectedDate = null, showHiddenOverlay = fa
     return '';
   }
 
+  // Check if we're in a decade-related slide transition
+  const isDecadeSlideTransition = (mode) => {
+    return [
+      VIEW_MODES.DECADE_TO_PREV_DECADES,
+      VIEW_MODES.DECADE_TO_NEXT_DECADES
+    ].includes(mode);
+  };
+
   const setClassNameForHeader = () => {
     if (isPrevTransition(viewState?.mode)) {
       return ` header-transition ${ANIMATIONS.SLIDE_RIGHT}`;
@@ -337,6 +406,16 @@ export default function DatePicker({ selectedDate = null, showHiddenOverlay = fa
       mode: VIEW_MODES.MONTH_TO_YEAR,
     }));
     setViewDate(new Date(year, viewDate.getMonth(), 1));
+  };
+
+  const handleDecadeClick = (startYear) => {
+    const decadeStart = getStartDecade(startYear);
+    const groupIndex = (startYear - decadeStart) / 12;
+    setViewState((prev) => ({
+      ...prev,
+      gridNumber: groupIndex + 1,
+      mode: VIEW_MODES.YEAR_TO_DECADE,
+    }));
   };
 
   // Toggle calendar open/closed
@@ -422,6 +501,39 @@ export default function DatePicker({ selectedDate = null, showHiddenOverlay = fa
     }
 
     return days;
+  };
+
+  // Generate calendar grid to show 12 groups of 12 years
+  const renderCalendarDecadesGrid = (date = viewDate) => {
+    const currentYear = date.getFullYear();
+    const decadeStart = getStartDecade(currentYear);
+    const decades = [];
+
+    for (let i = 0; i < 12; i++) {
+      const groupStartYear = decadeStart + i * 12;
+      const groupEndYear = groupStartYear + 11;
+      const isSelected = currentDate && getStartYear(currentDate.getFullYear()) === groupStartYear;
+      decades.push(
+        <div
+          key={`decade-${groupStartYear}`}
+          className={`decade ${isSelected ? 'selected' : ''}`}
+          data-index={i + 1}
+          onClick={() => {
+            const newDate = new Date(groupStartYear, date.getMonth(), 1);
+            setViewDate(newDate);
+            setViewState((prev) => ({
+              ...prev,
+              gridNumber: i + 1,
+              mode: VIEW_MODES.DECADE_TO_YEAR,
+            }));
+          }}
+        >
+          {groupStartYear}<br />{groupEndYear}
+        </div>
+      );
+    }
+
+    return decades;
   };
 
   // Generate calendar grid to show 12 years
@@ -533,12 +645,27 @@ export default function DatePicker({ selectedDate = null, showHiddenOverlay = fa
                     viewState?.mode === VIEW_MODES.YEAR_TO_PREV_YEARS ||
                     viewState?.mode === VIEW_MODES.YEAR_TO_NEXT_YEARS
                   ) && (
-                    <button className="navigator-title disabled">
+                    <button className="navigator-title" onClick={() => {
+                      handleDecadeClick(getStartYear(viewDate.getFullYear()));
+                    }}>
                       {getStartYear(viewDate.getFullYear())}
                       {' '}
                       &ndash;
                       {' '}
                       {getStartYear(viewDate.getFullYear()) + 11}
+                    </button>
+                  )}
+                  {(
+                    viewState?.mode === VIEW_MODES.DECADE ||
+                    viewState?.mode === VIEW_MODES.DECADE_TO_PREV_DECADES ||
+                    viewState?.mode === VIEW_MODES.DECADE_TO_NEXT_DECADES
+                  ) && (
+                    <button className="navigator-title disabled">
+                      {getStartDecade(viewDate.getFullYear())}
+                      {' '}
+                      &ndash;
+                      {' '}
+                      {getStartDecade(viewDate.getFullYear()) + 143}
                     </button>
                   )}
                 </div>
@@ -580,6 +707,18 @@ export default function DatePicker({ selectedDate = null, showHiddenOverlay = fa
                         {getStartYear(viewState?.setYear?.getFullYear()) + 11}
                       </button>
                     )}
+                    {(
+                      viewState?.mode === VIEW_MODES.DECADE_TO_PREV_DECADES ||
+                      viewState?.mode === VIEW_MODES.DECADE_TO_NEXT_DECADES
+                    ) && (
+                      <button className="navigator-title">
+                        {getStartDecade(viewState?.setYear?.getFullYear())}
+                        {' '}
+                        &ndash;
+                        {' '}
+                        {getStartDecade(viewState?.setYear?.getFullYear()) + 143}
+                      </button>
+                    )}
                   </div>
                   {renderNextButton()}
                 </div>
@@ -588,9 +727,71 @@ export default function DatePicker({ selectedDate = null, showHiddenOverlay = fa
           </div>
           <div className="calendar-body-container" ref={calendarBodyContainerRef}>
             {(
+              viewState?.mode === VIEW_MODES.DECADE ||
+              viewState?.mode === VIEW_MODES.YEAR_TO_DECADE ||
+              viewState?.mode === VIEW_MODES.DECADE_TO_YEAR ||
+              viewState?.mode === VIEW_MODES.DECADE_TO_PREV_DECADES ||
+              viewState?.mode === VIEW_MODES.DECADE_TO_NEXT_DECADES
+            ) && (
+              <div
+                className={`decades-grid-container ${setClassNameForDecadesGrid()}`}
+                style={setStyle()}
+                onAnimationEnd={() => {
+                  let toMode = viewState?.mode;
+                  if (viewState?.mode === VIEW_MODES.YEAR_TO_DECADE) {
+                    toMode = VIEW_MODES.DECADE;
+                  } else if (viewState?.mode === VIEW_MODES.DECADE_TO_YEAR) {
+                    toMode = VIEW_MODES.YEAR;
+                  } else if (viewState?.mode === VIEW_MODES.DECADE_TO_PREV_DECADES) {
+                    setViewDate(viewState?.setYear);
+                    setViewState((prev) => ({
+                      ...prev,
+                      mode: VIEW_MODES.DECADE,
+                    }));
+                    return;
+                  } else if (viewState?.mode === VIEW_MODES.DECADE_TO_NEXT_DECADES) {
+                    setViewDate(viewState?.setYear);
+                    setViewState((prev) => ({
+                      ...prev,
+                      mode: VIEW_MODES.DECADE,
+                    }));
+                    return;
+                  }
+                  setViewState((prev) => ({
+                    ...prev,
+                    mode: toMode,
+                  }));
+                }
+              }>
+                {renderCalendarDecadesGrid()}
+              </div>
+            )}
+            {(
+              viewState?.mode === VIEW_MODES.DECADE_TO_PREV_DECADES ||
+              viewState?.mode === VIEW_MODES.DECADE_TO_NEXT_DECADES
+            ) && (
+              <div
+                className={`decades-grid-container ${setClassNameForDecadesTransitionGrid()}`}
+                onAnimationEnd={() => {
+                  if (viewState?.mode === VIEW_MODES.DECADE_TO_PREV_DECADES ||
+                      viewState?.mode === VIEW_MODES.DECADE_TO_NEXT_DECADES) {
+                    setViewDate(viewState?.setYear);
+                    setViewState((prev) => ({
+                      ...prev,
+                      mode: VIEW_MODES.DECADE,
+                    }));
+                  }
+                }
+              }>
+                {renderCalendarDecadesGrid(viewState?.setYear)}
+              </div>
+            )}
+            {(
               viewState?.mode === VIEW_MODES.YEAR ||
               viewState?.mode === VIEW_MODES.MONTH_TO_YEAR ||
               viewState?.mode === VIEW_MODES.YEAR_TO_MONTH ||
+              viewState?.mode === VIEW_MODES.YEAR_TO_DECADE ||
+              viewState?.mode === VIEW_MODES.DECADE_TO_YEAR ||
               viewState?.mode === VIEW_MODES.YEAR_TO_PREV_YEARS ||
               viewState?.mode === VIEW_MODES.YEAR_TO_NEXT_YEARS
             ) && (
@@ -603,6 +804,10 @@ export default function DatePicker({ selectedDate = null, showHiddenOverlay = fa
                     toMode = VIEW_MODES.YEAR;
                   } else if (viewState?.mode === VIEW_MODES.YEAR_TO_MONTH) {
                     toMode = VIEW_MODES.MONTH;
+                  } else if (viewState?.mode === VIEW_MODES.YEAR_TO_DECADE) {
+                    toMode = VIEW_MODES.DECADE;
+                  } else if (viewState?.mode === VIEW_MODES.DECADE_TO_YEAR) {
+                    toMode = VIEW_MODES.YEAR;
                   } else if (viewState?.mode === VIEW_MODES.YEAR_TO_PREV_YEARS) {
                     setViewDate(viewState?.setYear);
                     setViewState((prev) => ({

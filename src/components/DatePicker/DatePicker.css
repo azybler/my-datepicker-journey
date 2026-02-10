@@ -101,6 +101,11 @@
   border: 1px solid #e4e4e7;
 }
 
+.navigator-title.disabled {
+  cursor: default;
+  pointer-events: none;
+}
+
 .year-navigator span,
 .month-navigator span {
   font-weight: bold;
@@ -173,7 +178,19 @@
   background-color: #f0f0f0;
 }
 
+.month.selected {
+  background-color: #007bff;
+  color: white;
+}
+
 .years-grid-container {
+  display: grid;
+  grid-template-columns: repeat(4, 1fr);
+  gap: 0;
+  background-color: transparent;
+}
+
+.decades-grid-container {
   display: grid;
   grid-template-columns: repeat(4, 1fr);
   gap: 0;
@@ -201,6 +218,31 @@
 
 .year:hover {
   background-color: #f0f0f0;
+}
+
+.year.selected {
+  background-color: #007bff;
+  color: white;
+}
+
+.decade {
+  text-align: center;
+  padding: 17px 0 18px;
+  cursor: pointer;
+  border-radius: 4px;
+  font-size: 16px;
+  color: #09090b;
+  letter-spacing: -0.5px;
+  line-height: 1.2em;
+}
+
+.decade:hover {
+  background-color: #f0f0f0;
+}
+
+.decade.selected {
+  background-color: #007bff;
+  color: white;
 }
 
 @keyframes transitionGridSlideAnimation {
@@ -296,7 +338,7 @@
   animation: transitionGridScaleAnimation var(--animation-scale-duration) ease-out forwards;
 }
 
-.days-grid-container, .months-grid-container, .years-grid-container {
+.days-grid-container, .months-grid-container, .years-grid-container, .decades-grid-container {
   margin: 0 calc(var(--calendar-padding) * 1px) calc(var(--calendar-padding) * 1px);
 }
 
