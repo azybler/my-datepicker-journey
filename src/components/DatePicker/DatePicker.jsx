@@ -536,7 +536,7 @@ export default function DatePicker({ selectedDate = null, showHiddenOverlay = fa
             }));
           }}
         >
-          {groupStartYear}<br />-<br />{groupEndYear}
+          {groupStartYear}<br />&ndash;<br />{groupEndYear}
         </div>
       );
     }
