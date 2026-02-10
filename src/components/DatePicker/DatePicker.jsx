@@ -55,7 +55,7 @@ export default function DatePicker({ selectedDate = null, showHiddenOverlay = fa
     SLIDE_LEFT: 'will-change-transform-and-opacity transition-grid-animate-slideLeft',
     SLIDE_RIGHT: 'will-change-transform-and-opacity transition-grid-animate-slideRight',
     MAIN_SLIDE_LEFT: 'will-change-transform-and-opacity main-grid-animate-slideLeft',
-    MAIN_SLIDE_RIGHT: 'will-change-scale-and-opacity main-grid-animate-slideRight',
+    MAIN_SLIDE_RIGHT: 'will-change-transform-and-opacity main-grid-animate-slideRight',
     CONTRACT: 'will-change-scale-and-opacity transition-grid-animate-contract',
     EXPAND: 'will-change-scale-and-opacity transition-grid-animate-expand',
     MAIN_CONTRACT: 'will-change-scale-and-opacity main-grid-animate-contract',

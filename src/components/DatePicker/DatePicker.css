@@ -56,6 +56,7 @@
 
 .calendar-body-container {
   position: relative;
+  contain: layout style;
 }
 
 .year-navigator,
@@ -198,11 +199,15 @@
 }
 
 .will-change-transform-and-opacity {
-  will-change: transform, opacity; 
+  will-change: transform, opacity;
+  backface-visibility: hidden;
+  -webkit-backface-visibility: hidden;
 }
 
 .will-change-scale-and-opacity {
-  will-change: scale, opacity;
+  will-change: transform, opacity;
+  backface-visibility: hidden;
+  -webkit-backface-visibility: hidden;
 }
 
 .year {
@@ -247,59 +252,63 @@
 
 @keyframes transitionGridSlideAnimation {
   0% {
-    transform: translateX(100%);
+    transform: translate3d(100%, 0, 0);
     opacity: 0;
   }
   100% {
-    transform: translateX();
+    transform: translate3d(0, 0, 0);
     opacity: 1;
   }
 }
 
 .transition-grid-animate-slideLeft {
-  animation: transitionGridSlideAnimation var(--animation-slide-duration) ease-in forwards;
+  animation: transitionGridSlideAnimation var(--animation-slide-duration) cubic-bezier(0.4, 0, 0.2, 1) forwards;
 }
 
 .transition-grid-animate-slideRight {
-  animation: transitionGridSlideAnimation var(--animation-slide-duration) ease-in reverse forwards;
+  animation: transitionGridSlideAnimation var(--animation-slide-duration) cubic-bezier(0.4, 0, 0.2, 1) reverse forwards;
 }
 
 @keyframes mainGridSlideAnimation {
   0% {
-    transform: translateX();
+    transform: translate3d(0, 0, 0);
     opacity: 1;
   }
   100% {
-    transform: translateX(-100%);
+    transform: translate3d(-100%, 0, 0);
     opacity: 0;
   }
 }
 
 .main-grid-animate-slideLeft {
-  animation: mainGridSlideAnimation var(--animation-slide-duration) ease-in forwards;
+  animation: mainGridSlideAnimation var(--animation-slide-duration) cubic-bezier(0.4, 0, 0.2, 1) forwards;
 }
 
 .main-grid-animate-slideRight {
-  animation: mainGridSlideAnimation var(--animation-slide-duration) ease-in reverse forwards;
+  animation: mainGridSlideAnimation var(--animation-slide-duration) cubic-bezier(0.4, 0, 0.2, 1) reverse forwards;
 }
 
 @keyframes mainGridScaleAnimation {
   0% {
-    transform: scale(calc((var(--calendar-width)/var(--calendar-months-col))/var(--calendar-width)));
+    transform: scale3d(
+      calc((var(--calendar-width) / var(--calendar-months-col)) / var(--calendar-width)),
+      calc((var(--calendar-width) / var(--calendar-months-col)) / var(--calendar-width)),
+      1
+    );
     opacity: 0;
   }
   100% {
-    transform: scale(1);
+    transform: scale3d(1, 1, 1);
     opacity: 1;
   }
 }
 
 .main-grid-animate-contract {
-  animation: mainGridScaleAnimation var(--animation-scale-duration) ease-out reverse forwards;
+  animation: mainGridScaleAnimation var(--animation-scale-duration) cubic-bezier(0.4, 0, 0.2, 1) reverse forwards;
 }
 
 .main-grid-animate-expand {
-  animation: mainGridScaleAnimation var(--animation-scale-duration) ease-out forwards;
+  animation: mainGridScaleAnimation var(--animation-scale-duration) cubic-bezier(0.4, 0, 0.2, 1) forwards;
 }
 
 .header-transition, .body-transition {
@@ -321,25 +330,26 @@
 
 @keyframes transitionGridScaleAnimation {
   0% {
-    transform: scale(1);
+    transform: scale3d(1, 1, 1);
     opacity: 1;
-}
+  }
   100% {
-    transform: scale(var(--calendar-months-col));
+    transform: scale3d(var(--calendar-months-col), var(--calendar-months-col), 1);
     opacity: 0;
   }
 }
 
 .transition-grid-animate-contract {
-  animation: transitionGridScaleAnimation var(--animation-scale-duration) ease-out reverse forwards;
+  animation: transitionGridScaleAnimation var(--animation-scale-duration) cubic-bezier(0.4, 0, 0.2, 1) reverse forwards;
 }
 
 .transition-grid-animate-expand {
-  animation: transitionGridScaleAnimation var(--animation-scale-duration) ease-out forwards;
+  animation: transitionGridScaleAnimation var(--animation-scale-duration) cubic-bezier(0.4, 0, 0.2, 1) forwards;
 }
 
 .days-grid-container, .months-grid-container, .years-grid-container, .decades-grid-container {
   margin: 0 calc(var(--calendar-padding) * 1px) calc(var(--calendar-padding) * 1px);
+  transform: translate3d(0, 0, 0);
 }
 
 .hidden {
@@ -348,37 +358,39 @@
 
 @keyframes calendarOpen {
   0% {
-    transform: scale(0.5);
+    transform: scale3d(0.5, 0.5, 1);
     opacity: 0;
   }
   70% {
-    transform: scale(1.02);
+    transform: scale3d(1.02, 1.02, 1);
     opacity: 1;
   }
   100% {
-    transform: scale(1);
+    transform: scale3d(1, 1, 1);
     opacity: 1;
   }
 }
 
 @keyframes calendarClose {
   0% {
-    transform: scale(1);
+    transform: scale3d(1, 1, 1);
     opacity: 1;
   }
   100% {
-    transform: scale(0.5);
+    transform: scale3d(0.5, 0.5, 1);
     opacity: 0;
   }
 }
 
 .calendar-animate-open {
-  animation: calendarOpen var(--animation-scale-duration) ease-out forwards;
+  animation: calendarOpen var(--animation-scale-duration) cubic-bezier(0.4, 0, 0.2, 1) forwards;
   transform-origin: 24px -8px;
+  will-change: transform, opacity;
 }
 
 .calendar-animate-close {
-  animation: calendarClose calc(var(--animation-scale-duration) * 0.6) ease-in forwards;
+  animation: calendarClose calc(var(--animation-scale-duration) * 0.6) cubic-bezier(0.4, 0, 0.2, 1) forwards;
   transform-origin: 24px -8px;
   pointer-events: none;
+  will-change: transform, opacity;
 }
