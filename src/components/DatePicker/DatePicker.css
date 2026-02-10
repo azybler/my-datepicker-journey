@@ -169,9 +169,9 @@
   padding: 19px 0;
   cursor: pointer;
   border-radius: 4px;
-  font-size: 29px;
+  font-size: 33px;/*29*/
   color: #09090b;
-  line-height: 1.2em;
+  line-height: 1.07em;
 }
 
 .month:hover {
@@ -213,7 +213,7 @@
   font-size: 25px;
   color: #09090b;
   letter-spacing: -1px;
-  line-height: 1.2em;
+  line-height: 1.21em;
 }
 
 .year:hover {
@@ -227,13 +227,13 @@
 
 .decade {
   text-align: center;
-  padding: 17px 0 18px;
+  padding: 14px 0 15px;
   cursor: pointer;
   border-radius: 4px;
-  font-size: 16px;
+  font-size: 25px;
   color: #09090b;
   letter-spacing: -0.5px;
-  line-height: 1.2em;
+  line-height: 0.59em;
 }
 
 .decade:hover {
